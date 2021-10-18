@@ -20,11 +20,15 @@ class CovidMetadataController extends Controller
     {
 
         $response = Http::get($this->domain =env('COVID_TRACKER_URL'));
-
+        if ($response != null && json_decode($response)->Global != null)
+        {
+            $this->cleanMetadata();
+        } else {
+            //TODO Throw error statement
+        }
         $listOfCountries = json_decode($response)->Countries;
         $this->saveCountryData($listOfCountries);
 
-        $this->cleanMetadata();
 
         return response($response,Response::HTTP_OK);
     }
