@@ -16,8 +16,13 @@ class CreateCountryTable extends Migration
         Schema::create('country', function (Blueprint $table) {
             $table->increments('id');
             $table->string('country_name');
-            $table->string('country_iso3');
-            $table->integer('country_uid');
+            $table->string('country_code');
+            $table->string('country_slug');
+            $table->integer('country_new_confirmed');
+            $table->integer('country_total_confirmed');
+            $table->integer('country_new_deaths');
+            $table->integer('country_total_deaths');
+            $table->dateTime('country_status_date')->nullable($value = true);//TODO add proper date columns
             $table->timestamps();
         });
     }

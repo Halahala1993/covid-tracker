@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class State extends Model
+class GlobalStats extends Model
 {
     use HasFactory;
 
@@ -14,14 +14,8 @@ class State extends Model
      *
      * @var string
      */
-    protected $table = 'state';
+    protected $table = 'global_stats';
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'state_id';
 
     /**
      * Indicates if the model's ID is auto-incrementing.

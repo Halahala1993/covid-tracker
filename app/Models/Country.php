@@ -17,13 +17,6 @@ class Country extends Model
     protected $table = 'country';
 
     /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'country_id';
-
-    /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool

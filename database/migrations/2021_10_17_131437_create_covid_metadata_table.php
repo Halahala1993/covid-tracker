@@ -21,8 +21,8 @@ class CreateCovidMetadataTable extends Migration
             $table->string('counties');
             $table->string('iso3s');
             $table->integer('uids');
-            $table->timestamp('first_date');
-            $table->timestamp('last_date');
+            $table->string('first_date');
+            $table->string('last_date');
             $table->timestamps();
         });
     }
