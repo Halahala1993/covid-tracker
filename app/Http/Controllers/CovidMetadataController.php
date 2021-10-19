@@ -40,7 +40,7 @@ class CovidMetadataController extends Controller
      */
     private function saveCountryData($listOfCountries)
     {
-
+        //TODO third party API doesn't have greenland for some reason :(
         if ($listOfCountries != null && count($listOfCountries) > 0) {
 
             //Clean country data to avoid unnecessary duplicates and only keep the latest data

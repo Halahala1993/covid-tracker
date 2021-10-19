@@ -8,7 +8,7 @@ import App from './App.vue';
 import {routes} from "./routes";
 import VueRouter from 'vue-router';
 import axios from 'axios';
-
+import MapsComponent from 'world-map-vue'
 require('./bootstrap');
 
 window.Vue = require('vue').default;
@@ -24,13 +24,13 @@ Vue.prototype.axios = axios;
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-import { MapsComponent, MapsPlugin } from '@syncfusion/ej2-vue-maps';
+// import { MapsComponent, MapsPlugin } from '@syncfusion/ej2-vue-maps';
 
 // Vue.component('maps-component', MapsComponent);
-
+Vue.component('maps-component', MapsComponent)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('country-component', require('./components/AllCountries.vue').default);
-Vue.component('maps-component', require('./components/MapsComponent.vue').default);
+// Vue.component('maps-component', require('./components/MapsComponent.vue').default);
 
 const router = new VueRouter({
     mode:'history',
