@@ -1,7 +1,12 @@
 <template>
     <div>
-        <h3 class="text-center">All Country Covid-19 Cases as of {{currentDate}}</h3><br/>
+        <h3 class="text-center">All Country Covid-19 Cases as of {{ currentDate }}</h3><br/>
 
+        <div class="row">
+            <div class="search-wrapper panel-heading col-sm-12">
+                <input class="form-control" type="text" v-model="searchQuery" placeholder="Search"/>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -14,7 +19,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="country in countries" :key="country.id">
+            <tr v-for="country in resultQuery" :key="country.id">
                 <td>{{ country.id }}</td>
                 <td>{{ country.country_name }}</td>
                 <td>{{ country.country_code }}</td>
@@ -22,9 +27,10 @@
                 <td>{{ country.country_total_confirmed }}</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <router-link :to="{name: 'edit', params: { id: country.id }}" class="btn btn-primary">Edit
+                        <router-link :to="{name: 'edit', params: { id: country.id }}" class="btn btn-primary">
+                            Edit
                         </router-link>
-<!--                        <button class="btn btn-danger" @click="deleteCountry(country.id)">Delete</button>-->
+                        <!--                        <button class="btn btn-danger" @click="deleteCountry(country.id)">Delete</button>-->
                     </div>
                 </td>
             </tr>
@@ -37,13 +43,28 @@
 export default {
     data() {
         return {
+            currentDate: String,
             countries: [],
-            currentDate:String
+            searchQuery: null,
+        }
+    },
+    computed: {
+        resultQuery() {
+            if (this.searchQuery) {
+                return this.countries.filter((country) => {
+                    return this.searchQuery
+                        .toLowerCase()
+                        .split(' ')
+                        .every(v => country.country_name.toLowerCase().includes(v))
+                })
+            } else {
+                return this.countries;
+            }
         }
     },
     created() {
 
-        var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+        let currentDateWithFormat = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
         this.currentDate = currentDateWithFormat.toString();
         console.log(currentDateWithFormat);
 
