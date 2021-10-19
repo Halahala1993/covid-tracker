@@ -10,7 +10,7 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>ID</th>
+<!--                <th>ID</th>-->
                 <th>Country Name</th>
                 <th>Country Code</th>
                 <th>New Confirmed Cases</th>
@@ -20,7 +20,7 @@
             </thead>
             <tbody>
             <tr v-for="country in resultQuery" :key="country.id">
-                <td>{{ country.id }}</td>
+<!--                <td>{{ country.id }}</td>-->
                 <td>{{ country.country_name }}</td>
                 <td>{{ country.country_code }}</td>
                 <td>{{ country.country_new_confirmed }}</td>
@@ -66,7 +66,7 @@ export default {
 
         let currentDateWithFormat = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
         this.currentDate = currentDateWithFormat.toString();
-        console.log(currentDateWithFormat);
+        // console.log(currentDateWithFormat);
 
         this.axios
             .get('http://localhost:9000/api/country')

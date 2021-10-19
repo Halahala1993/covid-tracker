@@ -16,7 +16,6 @@ class CountryController extends Controller
             ->distinct()
             ->get();
 
-        Log:info('Amount of countries' . count($countries));
         return response($countries,
             Response::HTTP_OK);
     }
@@ -29,7 +28,14 @@ class CountryController extends Controller
     public function updateCountryData(Request $request, $id)
     {
         $country = Country::find($id);
-        $country->country_total_confirmed = $request->total_confirmed;
+        $country->country_name = $request->country_name;
+        $country->country_code = $request->country_code;
+        $country->country_slug = $request->country_slug;
+        $country->country_new_confirmed = $request->country_new_confirmed;
+        $country->country_total_confirmed = $request->country_total_confirmed;
+        $country->country_new_deaths = $request->country_new_deaths;
+        $country->country_total_deaths = $request->country_total_deaths;
+        $country->country_status_date = $request->country_status_date;
         $country->save();
 
         return response(null, Response::HTTP_OK);
