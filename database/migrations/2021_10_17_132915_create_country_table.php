@@ -22,7 +22,7 @@ class CreateCountryTable extends Migration
             $table->integer('country_total_confirmed');
             $table->integer('country_new_deaths');
             $table->integer('country_total_deaths');
-            $table->dateTime('country_status_date')->nullable($value = true);//TODO add proper date columns
+            $table->dateTime('country_status_date')->nullable($value = true);
             $table->timestamps();
         });
     }

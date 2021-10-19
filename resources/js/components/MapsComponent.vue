@@ -1,27 +1,26 @@
 <template>
     <div class="wrapper">
-<!--        <themap :countryData="countryData1"></themap>-->
-<!--        <themap :countryData="countryData1" @mouseleave="on_mouseleave" @mouseenter="on_mouseenter" />-->
-        <maps-component
+        <world-maps-component
             :country-data="countryData"
             :show-overlay="showMapOverlay"
             :countryColors="false"
-            :lowColor="blue"
-            :highColor="red"
+            :lowColor="'blue'"
+            :highColor="'red'"
+            :showColorBar="true"
             @mouseenter="onMouseEnterMapCountry"
             @mouseleave="onMouseLeaveMapCountry"
             @click="onClickMapCountry"
         >
             <template v-slot:overlay>
-                {{countryName}}'s Total Case Count: {{totalCaseCount}}
+                <p v-if="totalCaseCount === 0">No case information available for {{countryName}}</p>
+                <p v-if="totalCaseCount > 0">{{countryName}}'s Total Case Count: {{totalCaseCount}}</p>
             </template>
-        </maps-component>
+        </world-maps-component>
     </div>
 </template>
 <script>
-import Vue from 'vue';
-export default Vue.extend({
-    data: function() {
+export default {
+    data() {
         return {
             countryData: {
                 US: 100,
@@ -36,21 +35,33 @@ export default Vue.extend({
     },
     created() {
         this.axios
-            .get('http://localhost:9000/api/country')
+            .get('http://localhost:9000/api/country')//TODO extract URL to unified location
             .then(response => {
+                //TODO add loading screen while data is being retrieved.
                 this.countries = response.data;
+                this.calculateCountryColorCode();
             });
     },
     methods: {
+
+        //TODO implement tooltip under mouse instead of built in overlay
         onMouseEnterMapCountry (countryCode) {
             this.showMapOverlay = true
-            // Update your data/property to be displayed on the overlay.
+            let unlistedCountry = true;
             this.countries.forEach((country) => {
                 if (country.country_code === countryCode) {
                     this.totalCaseCount = country.country_total_confirmed;
                     this.countryName = country.country_name;
+                    unlistedCountry = false;
                 }
             });
+
+            //Information mismatch between 3rd party API and maps info.
+            //TODO Implement a seed for all countries and sync it all up
+            if (unlistedCountry === true) {
+                this.countryName = countryCode;
+                this.totalCaseCount = 0;
+            }
         },
         onMouseLeaveMapCountry () {
             this.showMapOverlay = false
@@ -62,7 +73,18 @@ export default Vue.extend({
                 }
             });
         },
+        /*
+        * Apply the color code values depending on the amount of digits in total cases
+        * for a given country.
+        */
+        calculateCountryColorCode() {
+            this.countryData = {};
+            this.countries.forEach((country) => {
+                let totalConfirmedLength = country.country_total_confirmed.toString().length;
+                this.countryData[country.country_code] =  totalConfirmedLength * 20;
+            });
+        }
     }
-});
+}
 
 </script>

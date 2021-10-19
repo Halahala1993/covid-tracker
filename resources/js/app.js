@@ -26,11 +26,10 @@ Vue.prototype.axios = axios;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 // import { MapsComponent, MapsPlugin } from '@syncfusion/ej2-vue-maps';
 
-// Vue.component('maps-component', MapsComponent);
-Vue.component('maps-component', MapsComponent)
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('world-maps-component', MapsComponent)
+//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('country-component', require('./components/AllCountries.vue').default);
-// Vue.component('maps-component', require('./components/MapsComponent.vue').default);
+Vue.component('maps-component', require('./components/MapsComponent.vue').default);
 
 const router = new VueRouter({
     mode:'history',
