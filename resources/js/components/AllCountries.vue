@@ -44,21 +44,28 @@ export default {
     data() {
         return {
             currentDate: String,
-            countries: [],
             searchQuery: null,
+        }
+    },
+    props: {
+        countries: []
+    },
+    watch: {
+        countries () {
+
         }
     },
     computed: {
         resultQuery() {
             if (this.searchQuery) {
-                return this.countries.filter((country) => {
+                return this.$props.countries.filter((country) => {
                     return this.searchQuery
                         .toLowerCase()
                         .split(' ')
                         .every(v => country.country_name.toLowerCase().includes(v))
                 })
             } else {
-                return this.countries;
+                return this.$props.countries;
             }
         }
     },
@@ -67,12 +74,6 @@ export default {
         let currentDateWithFormat = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
         this.currentDate = currentDateWithFormat.toString();
         // console.log(currentDateWithFormat);
-
-        this.axios
-            .get('http://localhost:9000/api/country')
-            .then(response => {
-                this.countries = response.data;
-            });
     },
     methods: {
         /*deleteCountry(id) {

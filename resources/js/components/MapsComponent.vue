@@ -20,6 +20,14 @@
 </template>
 <script>
 export default {
+    props: {
+        countries: []
+    },
+    watch: {
+        countries () {
+            this.calculateCountryColorCode();
+        }
+    },
     data() {
         return {
             countryData: {
@@ -27,20 +35,10 @@ export default {
                 CA: 200,
                 GB: 500,
             },
-            countries: [],
             totalCaseCount: 0,
             countryName: '',
             showMapOverlay: false
         };
-    },
-    created() {
-        this.axios
-            .get('http://localhost:9000/api/country')//TODO extract URL to unified location
-            .then(response => {
-                //TODO add loading screen while data is being retrieved.
-                this.countries = response.data;
-                this.calculateCountryColorCode();
-            });
     },
     methods: {
 
@@ -48,7 +46,7 @@ export default {
         onMouseEnterMapCountry (countryCode) {
             this.showMapOverlay = true
             let unlistedCountry = true;
-            this.countries.forEach((country) => {
+            this.$props.countries.forEach((country) => {
                 if (country.country_code === countryCode) {
                     this.totalCaseCount = country.country_total_confirmed;
                     this.countryName = country.country_name;
@@ -67,7 +65,7 @@ export default {
             this.showMapOverlay = false
         },
         onClickMapCountry (countryCode) {
-            this.countries.forEach((country) => {
+            this.$props.countries.forEach((country) => {
                 if (country.country_code === countryCode) {
                     this.$router.push({name: 'edit', params: { id: country.id }});
                 }
@@ -77,9 +75,9 @@ export default {
         * Apply the color code values depending on the amount of digits in total cases
         * for a given country.
         */
-        calculateCountryColorCode() {
+        calculateCountryColorCode()  {
             this.countryData = {};
-            this.countries.forEach((country) => {
+            this.$props.countries.forEach((country) => {
                 let totalConfirmedLength = country.country_total_confirmed.toString().length;
                 this.countryData[country.country_code] =  totalConfirmedLength * 20;
             });
