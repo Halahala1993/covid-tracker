@@ -20,14 +20,6 @@
 </template>
 <script>
 export default {
-    props: {
-        countries: []
-    },
-    watch: {
-        countries () {
-            this.calculateCountryColorCode();
-        }
-    },
     data() {
         return {
             countryData: {
@@ -40,10 +32,50 @@ export default {
             showMapOverlay: false
         };
     },
+    props: ['countries']
+    ,
+    watch: {
+        $props: {
+            handler() {
+                this.calculateCountryColorCode();
+            },
+            deep: true,
+            immediate: true,
+        },
+    },
     methods: {
 
         //TODO implement tooltip under mouse instead of built in overlay
         onMouseEnterMapCountry (countryCode) {
+            if (this.$props.countries != null && this.$props.countries.length > 0) {
+                this.populateOverlayInformation(countryCode);
+            }
+        },
+        onMouseLeaveMapCountry () {
+            this.showMapOverlay = false
+        },
+        onClickMapCountry (countryCode) {
+            if (this.$props.countries != null && this.$props.countries.length > 0) {
+
+                this.$props.countries.forEach((country) => {
+                    if (country.country_code === countryCode) {
+                        this.$router.push({name: 'edit', params: {id: country.id}});
+                    }
+                });
+            }
+        },
+        /*
+        * Apply the color code values depending on the amount of digits in total cases
+        * for a given country.
+        */
+        calculateCountryColorCode()  {
+            this.countryData = {};
+            this.$props.countries.forEach((country) => {
+                let totalConfirmedLength = country.country_total_confirmed.toString().length;
+                this.countryData[country.country_code] =  totalConfirmedLength * 20;
+            });
+        },
+        populateOverlayInformation(countryCode) {
             this.showMapOverlay = true
             let unlistedCountry = true;
             this.$props.countries.forEach((country) => {
@@ -60,27 +92,6 @@ export default {
                 this.countryName = countryCode;
                 this.totalCaseCount = 0;
             }
-        },
-        onMouseLeaveMapCountry () {
-            this.showMapOverlay = false
-        },
-        onClickMapCountry (countryCode) {
-            this.$props.countries.forEach((country) => {
-                if (country.country_code === countryCode) {
-                    this.$router.push({name: 'edit', params: { id: country.id }});
-                }
-            });
-        },
-        /*
-        * Apply the color code values depending on the amount of digits in total cases
-        * for a given country.
-        */
-        calculateCountryColorCode()  {
-            this.countryData = {};
-            this.$props.countries.forEach((country) => {
-                let totalConfirmedLength = country.country_total_confirmed.toString().length;
-                this.countryData[country.country_code] =  totalConfirmedLength * 20;
-            });
         }
     }
 }

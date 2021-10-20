@@ -1,33 +1,41 @@
 <template>
     <div class="container">
-        <div id="world-map">
-            <maps-component
-                :countries="countries"
-            ></maps-component>
+
+        <div v-if="!dataReady"
+             class="d-flex justify-content-center"
+             style="min-height: 75%; min-height: 75vh;
+              display: flex; align-items: center;">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
-        <hr><br>
-        <div id="countries-list">
-            <country-component
-                :countries="countries"
-            ></country-component>
-        </div>
+
+        <maps-component :countries="countries" v-if="dataReady"
+        ></maps-component>
+        <hr>
+        <br>
+        <country-component :countries="countries" v-if="dataReady"
+        ></country-component>
     </div>
 </template>
 
 <script>
+
 export default {
-//    TODO retrieve countries here and pass in to components as param
+
     data() {
         return {
             countries: [],
+            dataReady: false,
+            baseUrl: process.env.MIX_API_BASE_URL
         }
     },
     created() {
         this.axios
-            .get('http://localhost:9000/api/country')//TODO extract URL to unified location
+            .get(this.baseUrl + '/country')
             .then(response => {
-                //TODO add loading screen while data is being retrieved.
                 this.countries = response.data;
+                this.dataReady = true;
             });
     },
 }

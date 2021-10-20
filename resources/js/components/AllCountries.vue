@@ -47,13 +47,16 @@ export default {
             searchQuery: null,
         }
     },
-    props: {
-        countries: []
-    },
+    props: ['countries']
+    ,
     watch: {
-        countries () {
+        $props: {
+            handler() {
 
-        }
+            },
+            deep: true,
+            immediate: true,
+        },
     },
     computed: {
         resultQuery() {
@@ -78,7 +81,7 @@ export default {
     methods: {
         /*deleteCountry(id) {
             this.axios
-                .delete(`http://localhost:9000/api/country/${id}`)
+                .delete(`${this.baseUrl}/country/${id}`)
                 .then(response => {
                     //Remove country from table
                     let i = this.countries.map(item => item.id).indexOf(id);

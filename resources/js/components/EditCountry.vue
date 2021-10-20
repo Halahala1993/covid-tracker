@@ -27,7 +27,8 @@ export default {
         return {
             country: {},
             newCases: Number,
-            currentDate: String
+            currentDate: String,
+            baseUrl: process.env.MIX_API_BASE_URL
         }
     },
     created() {
@@ -35,7 +36,7 @@ export default {
         this.currentDate = currentDateWithFormat.toString();
 
         this.axios
-            .get(`http://localhost:9000/api/country/${this.$route.params.id}`)
+            .get(`${this.baseUrl}/country/${this.$route.params.id}`)
             .then((response) => {
                 this.country = response.data;
                 // console.log(response.data);
@@ -44,7 +45,7 @@ export default {
     methods: {
         updateCountryDetails() {
             this.axios
-                .put(`http://localhost:9000/api/country/${this.$route.params.id}`, this.country)
+                .put(`${this.baseUrl}/country/${this.$route.params.id}`, this.country)
                 .then((response) => {
                     this.$router.push({name: 'home'});
                 });
