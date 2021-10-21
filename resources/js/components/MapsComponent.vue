@@ -7,13 +7,30 @@
             :lowColor="'blue'"
             :highColor="'red'"
             :showColorBar="true"
+            :countryStrokeColor="'black'"
             @mouseenter="onMouseEnterMapCountry"
             @mouseleave="onMouseLeaveMapCountry"
             @click="onClickMapCountry"
         >
             <template v-slot:overlay>
-                <p v-if="totalCaseCount === 0">No case information available for {{countryName}}</p>
-                <p v-if="totalCaseCount > 0">{{countryName}}'s Total Case Count: {{totalCaseCount}}</p>
+                    <div class="card-body">
+                        <h5 class="card-title">{{countryName}}</h5>
+                        <p v-if="totalCaseCount === 0" class="card-text">No case information available for {{countryName}}</p>
+                        <table v-if="totalCaseCount > 0" class="table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col"> New Covid Cases </th>
+                                <th scope="col"> Total Covid Cases </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{newCaseCount}}</td>
+                                <td>{{totalCaseCount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
             </template>
         </world-maps-component>
     </div>
@@ -28,6 +45,7 @@ export default {
                 GB: 500,
             },
             totalCaseCount: 0,
+            newCaseCount:0,
             countryName: '',
             showMapOverlay: false
         };
@@ -58,7 +76,7 @@ export default {
             if (this.$props.countries != null && this.$props.countries.length > 0) {
 
                 this.$props.countries.forEach((country) => {
-                    if (country.country_code === countryCode) {
+                    if (country.code === countryCode) {
                         this.$router.push({name: 'edit', params: {id: country.id}});
                     }
                 });
@@ -71,23 +89,29 @@ export default {
         calculateCountryColorCode()  {
             this.countryData = {};
             this.$props.countries.forEach((country) => {
-                let totalConfirmedLength = country.country_total_confirmed.toString().length;
-                this.countryData[country.country_code] =  totalConfirmedLength * 20;
+                let totalConfirmedLength = country.total_confirmed.toString().length;
+                //Unknown case amount should be white
+                if (country.total_confirmed > 0) {
+                    this.countryData[country.code] = totalConfirmedLength * 20;
+                }
             });
         },
+        /*
+        * Generate information to display in map overlay on hover
+        */
         populateOverlayInformation(countryCode) {
             this.showMapOverlay = true
             let unlistedCountry = true;
             this.$props.countries.forEach((country) => {
-                if (country.country_code === countryCode) {
-                    this.totalCaseCount = country.country_total_confirmed;
-                    this.countryName = country.country_name;
+                if (country.code === countryCode) {
+                    this.totalCaseCount = country.total_confirmed;
+                    this.newCaseCount = country.new_confirmed;
+                    this.countryName = country.name;
                     unlistedCountry = false;
                 }
             });
 
-            //Information mismatch between 3rd party API and maps info.
-            //TODO Implement a seed for all countries and sync it all up
+            //In case of information mismatch between 3rd party API and maps info.
             if (unlistedCountry === true) {
                 this.countryName = countryCode;
                 this.totalCaseCount = 0;

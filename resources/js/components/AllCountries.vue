@@ -21,10 +21,10 @@
             <tbody>
             <tr v-for="country in resultQuery" :key="country.id">
 <!--                <td>{{ country.id }}</td>-->
-                <td>{{ country.country_name }}</td>
-                <td>{{ country.country_code }}</td>
-                <td>{{ country.country_new_confirmed }}</td>
-                <td>{{ country.country_total_confirmed }}</td>
+                <td>{{ country.name }}</td>
+                <td>{{ country.code }}</td>
+                <td>{{ country.new_confirmed }}</td>
+                <td>{{ country.total_confirmed }}</td>
                 <td>
                     <div class="btn-group" role="group">
                         <router-link :to="{name: 'edit', params: { id: country.id }}" class="btn btn-primary">
@@ -65,7 +65,7 @@ export default {
                     return this.searchQuery
                         .toLowerCase()
                         .split(' ')
-                        .every(v => country.country_name.toLowerCase().includes(v))
+                        .every(v => country.name.toLowerCase().includes(v))
                 })
             } else {
                 return this.$props.countries;
