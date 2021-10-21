@@ -26,6 +26,7 @@ class CovidMetadataController extends Controller
         } else {
             //TODO Throw error statement
         }
+        Log:info("TESTING");
         $listOfCountries = json_decode($response)->Countries;
         $this->saveCountryData($listOfCountries);
 
@@ -44,22 +45,29 @@ class CovidMetadataController extends Controller
         if ($listOfCountries != null && count($listOfCountries) > 0) {
 
             //Clean country data to avoid unnecessary duplicates and only keep the latest data
-            $this->cleanCountryData();
+            //$this->cleanCountryData();
 
             foreach ($listOfCountries as $country) {
-                $newCountry = new Country();
-                $newCountry->country_name = $country->Country;
-                $newCountry->country_code = $country->CountryCode;
-                $newCountry->country_slug = $country->Slug;
-                $newCountry->country_new_confirmed = $country->NewConfirmed;
-                $newCountry->country_total_confirmed = $country->TotalConfirmed;
-                $newCountry->country_new_deaths = $country->NewDeaths;
-                $newCountry->country_total_deaths = $country->TotalDeaths;
-                $newCountry->country_status_date = Carbon::parse($country->Date);
-                $newCountry->save();
+                info("One");
+                $theCountry = (new CountryController)->retrieveCountryByCountryCode($country->CountryCode);
+                if ($theCountry === null ) {
+                    info("failed code: " . $country->CountryCode);
+                    continue;
+                }
+
+                info("Two");
+//                $theCountry->name = $country->Country;
+                $theCountry->code = $country->CountryCode;
+                $theCountry->slug = $country->Slug;
+                $theCountry->new_confirmed = $country->NewConfirmed;
+                $theCountry->total_confirmed = $country->TotalConfirmed;
+                $theCountry->new_deaths = $country->NewDeaths;
+                $theCountry->total_deaths = $country->TotalDeaths;
+                $theCountry->status_date = Carbon::parse($country->Date);
+                info('Country:' . $theCountry->name);
+                $theCountry->save();
             }
         }
-
     }
 
     /**

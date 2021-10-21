@@ -22,5 +22,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/metadata', [CovidMetadataController::class, 'retrieveMetadata']);
 Route::get('/country', [CountryController::class, 'retrieveAllCountries']);
-Route::get('/country/{id}', [CountryController::class, 'retrieveCountryDataById']);
+Route::get('/country/{id}', [CountryController::class, 'retrieveCountryById']);
 Route::put('/country/{id}', [CountryController::class, 'updateCountryData']);

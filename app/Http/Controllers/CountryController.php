@@ -20,22 +20,27 @@ class CountryController extends Controller
             Response::HTTP_OK);
     }
 
-    public function retrieveCountryDataById($id)
+    public function retrieveCountryById($id)
     {
         return Country::find($id);
+    }
+
+    public function retrieveCountryByCountryCode($countryCode)
+    {
+        return Country::where('code', $countryCode)->first();
     }
 
     public function updateCountryData(Request $request, $id)
     {
         $country = Country::find($id);
-        $country->country_name = $request->country_name;
-        $country->country_code = $request->country_code;
-        $country->country_slug = $request->country_slug;
-        $country->country_new_confirmed = $request->country_new_confirmed;
-        $country->country_total_confirmed = $request->country_total_confirmed;
-        $country->country_new_deaths = $request->country_new_deaths;
-        $country->country_total_deaths = $request->country_total_deaths;
-        $country->country_status_date = $request->country_status_date;
+        $country->name = $request->name;
+        $country->code = $request->code;
+        $country->slug = $request->slug;
+        $country->new_confirmed = $request->new_confirmed;
+        $country->total_confirmed = $request->total_confirmed;
+        $country->new_deaths = $request->new_deaths;
+        $country->total_deaths = $request->total_deaths;
+        $country->status_date = $request->status_date;
         $country->save();
 
         return response(null, Response::HTTP_OK);

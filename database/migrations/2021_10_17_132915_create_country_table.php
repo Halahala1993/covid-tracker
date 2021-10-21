@@ -15,14 +15,14 @@ class CreateCountryTable extends Migration
     {
         Schema::create('country', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('country_name');
-            $table->string('country_code');
-            $table->string('country_slug');
-            $table->integer('country_new_confirmed');
-            $table->integer('country_total_confirmed');
-            $table->integer('country_new_deaths');
-            $table->integer('country_total_deaths');
-            $table->dateTime('country_status_date')->nullable($value = true);
+            $table->string('name');
+            $table->string('code');
+            $table->string('slug')->nullable(true);
+            $table->integer('new_confirmed')->nullable(true);
+            $table->integer('total_confirmed')->nullable(true);
+            $table->integer('new_deaths')->nullable(true);
+            $table->integer('total_deaths')->nullable(true);
+            $table->dateTime('status_date')->nullable(true);
             $table->timestamps();
         });
     }
