@@ -3,8 +3,8 @@
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production"
@@ -22,14 +22,12 @@
         "sass-loader": "^11.0.1",
         "vue": "^2.6.12",
         "vue-loader": "^15.9.8",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "cross-env": "^7.0"
     },
     "dependencies": {
-        "@syncfusion/ej2-vue-maps": "^19.3.44",
         "vue-axios": "^3.3.7",
         "vue-router": "^3.5.2",
-        "vue-world-map": "^0.1.1",
-        "vue-world-map-ms": "^0.1.4",
         "world-map-vue": "^0.2.1"
     }
 }

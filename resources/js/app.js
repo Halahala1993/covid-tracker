@@ -9,15 +9,12 @@ import {routes} from "./routes";
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import MapsComponent from 'world-map-vue';
-import VTooltip from 'v-tooltip';
-
 require('./bootstrap');
 
 window.Vue = require('vue').default;
 Vue.use(VueRouter);
 Vue.prototype.axios = axios;
 
-Vue.use(VTooltip);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
