@@ -1,5 +1,11 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
+## About
+
+This project is a Covid19 tracking application that utilizes a world map with a country relative heat map to showcase the severity between country case count.
+Application uses the template project of Laravel and utilizes a third party 
+Covid19 tracking API: https://covid19api.com/ (Whose data is sourced from [John Hokins CSSE](https://github.com/CSSEGISandData/COVID-19)) to populate the world map and data.
+
 ## Requirements 
 
 - MySQL Database. [Example docker image](https://hub.docker.com/_/mariadb)
