@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\GlobalStats;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -22,16 +23,21 @@ class CovidMetadataController extends Controller
         $response = Http::get($this->domain =env('COVID_TRACKER_URL'));
         if ($response != null && json_decode($response)->Global != null)
         {
-            $this->cleanMetadata();
-        } else {
             //TODO Throw error statement
         }
-        Log:info("TESTING");
+
+
+        $globalStats = $this->saveGlobalStats(json_decode($response)->Global);
         $listOfCountries = json_decode($response)->Countries;
         $this->saveCountryData($listOfCountries);
 
 
-        return response($response,Response::HTTP_OK);
+        return response($globalStats,Response::HTTP_OK);
+    }
+
+    public function retrieveMetadataById($id)
+    {
+        return GlobalStats::find($id);
     }
 
     /**
@@ -41,22 +47,20 @@ class CovidMetadataController extends Controller
      */
     private function saveCountryData($listOfCountries)
     {
-        //TODO third party API doesn't have greenland for some reason :(
+
         if ($listOfCountries != null && count($listOfCountries) > 0) {
 
             //Clean country data to avoid unnecessary duplicates and only keep the latest data
             //$this->cleanCountryData();
 
             foreach ($listOfCountries as $country) {
-                info("One");
                 $theCountry = (new CountryController)->retrieveCountryByCountryCode($country->CountryCode);
                 if ($theCountry === null ) {
                     info("failed code: " . $country->CountryCode);
                     continue;
                 }
 
-                info("Two");
-//                $theCountry->name = $country->Country;
+                //$theCountry->name = $country->Country;
                 $theCountry->code = $country->CountryCode;
                 $theCountry->slug = $country->Slug;
                 $theCountry->new_confirmed = $country->NewConfirmed;
@@ -64,25 +68,25 @@ class CovidMetadataController extends Controller
                 $theCountry->new_deaths = $country->NewDeaths;
                 $theCountry->total_deaths = $country->TotalDeaths;
                 $theCountry->status_date = Carbon::parse($country->Date);
-                info('Country:' . $theCountry->name);
+                //info('Country:' . $theCountry->name);
                 $theCountry->save();
             }
         }
     }
 
-    /**
-     * Clean the present country data to only keep the latest data
-     */
-    private function cleanCountryData()
+    private function saveGlobalStats($metadata): GlobalStats
     {
-        DB::table('country')->delete();
-    }
+        $globalStats = $this->retrieveMetadataById(1);//Just keep one row for simplicity
+        if ($globalStats === null) {
+            $globalStats = new GlobalStats();
+        }
+        $globalStats->new_confirmed = $metadata->NewConfirmed;
+        $globalStats->total_confirmed = $metadata->TotalConfirmed;
+        $globalStats->new_deaths = $metadata->NewDeaths;
+        $globalStats->total_deaths = $metadata->TotalDeaths;
+        $globalStats->date = Carbon::parse($metadata->Date);
+        $globalStats->save();
 
-    /**
-     * Clean the present metadata to only keep the latest data
-     */
-    private function cleanMetadata()
-    {
-        DB::table('covid_metadata')->delete();
+        return $globalStats;
     }
 }

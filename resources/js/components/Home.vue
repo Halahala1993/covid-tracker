@@ -14,6 +14,9 @@
         ></maps-component>
         <hr>
         <br>
+        <global-stats-component :countries="countries" v-if="dataReady"
+        ></global-stats-component>
+        <hr>
         <country-component :countries="countries" v-if="dataReady"
         ></country-component>
     </div>

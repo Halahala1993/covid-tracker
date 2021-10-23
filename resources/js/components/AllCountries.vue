@@ -1,7 +1,5 @@
 <template>
     <div>
-        <h3 class="text-center">All Country Covid-19 Cases as of {{ currentDate }}</h3><br/>
-
         <div class="row">
             <div class="search-wrapper panel-heading col-sm-4">
                 <input class="form-control" type="text" v-model="searchQuery" placeholder="Search"/>
@@ -43,7 +41,6 @@
 export default {
     data() {
         return {
-            currentDate: String,
             searchQuery: null,
         }
     },
@@ -73,10 +70,6 @@ export default {
         }
     },
     created() {
-
-        let currentDateWithFormat = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
-        this.currentDate = currentDateWithFormat.toString();
-        // console.log(currentDateWithFormat);
     },
     methods: {
         /*deleteCountry(id) {

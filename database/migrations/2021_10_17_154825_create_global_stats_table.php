@@ -15,13 +15,13 @@ class CreateGlobalStatsTable extends Migration
     {
         Schema::create('global_stats', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('new_confirmed');
-            $table->integer('total_confirmed');
-            $table->integer('new_deaths');
-            $table->integer('total_deaths');
-            $table->integer('new_recovered');
-            $table->integer('total_recovered');
-            $table->string('date');
+            $table->integer('new_confirmed')->nullable(true);
+            $table->integer('total_confirmed')->nullable(true);
+            $table->integer('new_deaths')->nullable(true);
+            $table->integer('total_deaths')->nullable(true);
+            $table->integer('new_recovered')->nullable(true);
+            $table->integer('total_recovered')->nullable(true);
+            $table->dateTime('date')->nullable(true);
             $table->timestamps();
         });
     }

@@ -31,6 +31,7 @@ Vue.component('world-maps-component', MapsComponent)
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('country-component', require('./components/AllCountries.vue').default);
 Vue.component('maps-component', require('./components/MapsComponent.vue').default);
+Vue.component('global-stats-component', require('./components/GlobalStats.vue').default);
 
 const router = new VueRouter({
     mode:'history',
