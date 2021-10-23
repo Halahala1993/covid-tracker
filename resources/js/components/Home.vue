@@ -1,14 +1,7 @@
 <template>
     <div class="container">
 
-        <div v-if="!dataReady"
-             class="d-flex justify-content-center"
-             style="min-height: 75%; min-height: 75vh;
-              display: flex; align-items: center;">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
+        <loader :is-visible="dataReady" v-if="!dataReady"></loader>
 
         <maps-component :countries="countries" v-if="dataReady"
         ></maps-component>

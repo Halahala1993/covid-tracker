@@ -32,6 +32,7 @@ Vue.component('world-maps-component', MapsComponent)
 Vue.component('country-component', require('./components/AllCountries.vue').default);
 Vue.component('maps-component', require('./components/MapsComponent.vue').default);
 Vue.component('global-stats-component', require('./components/GlobalStats.vue').default);
+Vue.component('loader', require('./components/Loading.vue').default);
 
 const router = new VueRouter({
     mode:'history',
@@ -48,5 +49,37 @@ const app = new Vue({
     el: '#app',
     router: router,
     render: h => h(App),
+    data: {
+        isLoading: false,
+        axiosInterceptor: null,
+    },
+    mounted() {
+        this.enableInterceptor()
+    },
+    methods: {
+        enableInterceptor() {
+            this.axiosInterceptor = window.axios.interceptors.request.use((config) => {
+                this.isLoading = true
+                console.log('IS LOADING');
+                return config
+            }, (error) => {
+                this.isLoading = false
+                return Promise.reject(error)
+            })
+
+            window.axios.interceptors.response.use((response) => {
+                this.isLoading = false
+                console.log('IS NOT LOADING');
+                return response
+            }, function(error) {
+                this.isLoading = false
+                return Promise.reject(error)
+            })
+        },
+
+        disableInterceptor() {
+            window.axios.interceptors.request.eject(this.axiosInterceptor)
+        },
+    },
 });
 

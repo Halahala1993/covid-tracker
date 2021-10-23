@@ -79,7 +79,7 @@ Follow these steps to set up your local development. To quickly run as docker co
       composer require laravel/sail --dev
       php artisan sail:install #Installs the docker-compose.yml to root of the directory
 
-- Bring up the docker containers with (Note: on Windows command should be run through WSL terminal to work)
+- Bring up the docker containers through sail (Note: on Windows command should be run through WSL terminal to work)
 
       ./vendor/bin/sail up
 
