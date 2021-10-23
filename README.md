@@ -2,7 +2,6 @@
 
 ## Requirements 
 
----
 - MySQL Database. [Example docker image](https://hub.docker.com/_/mariadb)
 - Local Development Server. [WAMP](https://www.wampserver.com/en/) or [XAMPP](https://www.apachefriends.org/index.html)
 - [Composer (PHP Dependency Manager)](https://getcomposer.org/)
@@ -10,7 +9,6 @@
 
 ## Main Dependencies
 
----
 - Vue.js
   - [World Map Vue](https://www.npmjs.com/package/world-map-vue)
   - [vue-axios](https://www.npmjs.com/package/vue-axios)
@@ -21,8 +19,6 @@
   - (Optional) [sail](https://github.com/laravel/sail)
 
 ## Installation
-
----
 
 Follow these steps to set up your local development. To quickly run as docker containers please see the [sail section](#optional-run-in-docker-container-with-sail)
 
